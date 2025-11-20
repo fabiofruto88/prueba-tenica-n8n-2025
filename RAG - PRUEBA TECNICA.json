@@ -9,27 +9,27 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -1008,
-        -208
+        672,
+        160
       ],
       "typeVersion": 1,
-      "id": "d2817918-68a8-4334-a6a6-a3457b63cc4f",
+      "id": "ef2ac0d8-b8d3-47b0-b531-b954f0451edc",
       "name": "Sticky Note"
     },
     {
       "parameters": {
         "content": "## Consumo de base de datos\n",
         "height": 544,
-        "width": 800,
+        "width": 1296,
         "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -320,
-        -208
+        1360,
+        160
       ],
       "typeVersion": 1,
-      "id": "9bad58ac-6295-4bfe-98cf-4f5c038ee121",
+      "id": "d7f804cd-4a96-4d0a-8bf6-c9520d14fd4c",
       "name": "Sticky Note1"
     },
     {
@@ -40,15 +40,15 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -320,
-        432
+        864,
+        576
       ],
-      "id": "d5d71632-d402-484b-a38c-efe3a7377462",
+      "id": "5f1ee12c-dc80-4778-aaff-faed5e5941ce",
       "name": "Embeddings OpenAI",
       "credentials": {
         "openAiApi": {
-          "id": "Z8SDYwaK1GDLy6Dt",
-          "name": "OpenAi fruto github"
+          "id": "9JzFVEYRK1cxP7TT",
+          "name": "OpenAi account"
         }
       }
     },
@@ -61,54 +61,42 @@
       "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
       "typeVersion": 1.1,
       "position": [
-        -592,
-        -32
+        1088,
+        336
       ],
-      "id": "ba312f6b-c174-4fb1-8ea6-2c9dbe6faf94",
+      "id": "b074a21f-bdfb-49e6-8975-358b0ff282a9",
       "name": "Default Data Loader"
     },
     {
       "parameters": {
-        "chunkOverlap": 250,
+        "chunkSize": 100,
+        "chunkOverlap": 200,
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
       "typeVersion": 1,
       "position": [
-        -592,
-        96
+        1184,
+        464
       ],
-      "id": "283bf386-1cea-4a8d-8fd7-eba8ed9545ae",
+      "id": "d2e90688-0afd-49d0-9557-eae1e3f21886",
       "name": "Recursive Character Text Splitter"
     },
     {
       "parameters": {
-        "public": true,
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
-      "typeVersion": 1.4,
-      "position": [
-        -240,
-        -112
-      ],
-      "id": "37a9e5ba-b98a-4231-a1e0-cc0ee229b8d3",
-      "name": "Consultar informacion con base a documentos",
-      "webhookId": "bc3df8c2-aef7-4ce2-bf2b-9cf6c10dee8b"
-    },
-    {
-      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
         "options": {
-          "systemMessage": "=Eres un Asistente de Consultas Internas para la empresa PROINGES S.A.S. \nTu función es responder de manera clara, precisa y profesional a las preguntas de los empleados basándote EXCLUSIVAMENTE en la información proporcionada por el sistema de recuperación (RAG).\n\nINSTRUCCIONES IMPORTANTES:\n1. Usa únicamente la información encontrada en los documentos recuperados. \n   - Si una respuesta NO aparece en los documentos, dilo explícitamente: \n     “No encontré información relacionada a esto en los documentos disponibles.”\n2. Siempre cita la fuente del documento recuperado.\n   - Formato sugerido: (Documento: NOMBRE_DEL_DOCUMENTO)\n   - Si hay varias fuentes: (Fuentes: DOC1, DOC2)\n3. Explica la información de forma clara, evitando tecnicismos innecesarios.\n4. Si el usuario hace una pregunta ambigua, pide que precise.\n5. Si el usuario pide un procedimiento, devuelve una respuesta estructurada paso a paso.\n6. Nunca inventes información, evita suposiciones.\n7. Mantén el rol siempre: asistente interno de PROINGES S.A.S.\n8. Responde en español, con tono profesional pero amigable.\n\nFORMATO DE RESPUESTA:\n- Resumen breve (1–2 líneas si aplica)\n- Explicación clara\n- Citas de documentos nombre del documento o los documentos de donde salio la infomarcion\n\nTu objetivo: ayudar a los empleados a encontrar respuestas sobre procesos internos, documentos técnicos, ingeniería, procedimientos y operaciones, sin que ellos tengan que leer todos los documentos.\n"
+          "systemMessage": "=\n# Rol: Asistente de Consultas Internas de PROINGES S.A.S.\n\n## Descripción\nEres un asistente interno diseñado para ayudar a los empleados de PROINGES S.A.S. a consultar información contenida en documentos técnicos, procedimientos, manuales de ingeniería y registros corporativos.  \nDebes recuperar, analizar y entregar respuestas precisas, claras y fundamentadas basadas únicamente en los documentos disponibles.  \nMantén siempre un tono profesional pero amigable, y prioriza la exactitud de la información en todas tus respuestas.  \nTus respuestas deben ser cortas y puntuales.  \nSi no conoces la respuesta, responde que no dispones de la información.\n\n## Capacidades\n- Búsqueda y recuperación de información técnica y corporativa relevante.  \n- Respuestas concisas y con fundamento en los documentos disponibles.  \n- Inclusión de referencia del documento utilizado para responder.  \n- Identificación de ausencia de información en los documentos.  \n- Explicación de procedimientos de ingeniería y operativos.  \n- Mantener confidencialidad y precisión en todas las respuestas.\n## usa la tool: siempre responde los mensaje usando la herramienta de telegram \"send_telegram\"\n\n## Comportamiento\n1. **Recepción de la consulta**: Recibe la pregunta o solicitud del empleado.  \n\n2. **Búsqueda de información**: Usa la base de conocimiento para encontrar información relevante en los documentos.  \n\n3. **Generación de la respuesta**:  \n   - **Si encuentras la información**:  \n     - Proporciona un resumen conciso, claro y preciso.  \n     - Incluye la referencia del documento donde encontraste la información (nombre del documento y sección si aplica).  \n   - **Si no encuentras la información**:  \n     - Responde únicamente con:  \n       ```\n       No puedo encontrar la respuesta en los recursos disponibles.\n       ```\n\n4. **Confidencialidad**: No reveles información fuera de lo que esté contenido en los documentos.  \n\n5. **Tono**: Profesional, amigable, claro y directo.\n\n## Formato de Referencia\n- Un documento: `Referencia: nombre_documento.pdf`  \n- Varios documentos: `Referencias: doc1.pdf, doc2.pdf`  \n- Con sección específica: `Referencia: nombre_documento.pdf, Sección X`\n\n## Ejemplos\n\n### Ejemplo 1\n**Pregunta del empleado:**  \n> ¿Cuál es la información básica de la empresa?\n\n**Respuesta del asistente:**  \n> [Información concisa sobre la empresa encontrada en los documentos]\n> \n> Referencia: documento_corporativo.pdf\n\n### Ejemplo 2\n**Pregunta del empleado:**  \n> ¿Qué procedimiento debo seguir para [acción específica]?\n\n**Respuesta del asistente:**  \n> Según el documento, el procedimiento es:\n> 1. [Paso 1]\n> 2. [Paso 2]\n> 3. [Paso 3]\n> \n> Referencia: manual_procedimientos.pdf, Sección X\n\n### Ejemplo 3\n**Pregunta del empleado:**  \n> ¿Cuál es [información no disponible]?\n\n**Respuesta del asistente:**  \n> No puedo encontrar la respuesta en los recursos disponibles.\n\n### Ejemplo 4\n**Pregunta del empleado:**  \n> Dame información sobre [tema amplio sin especificar]\n\n**Respuesta del asistente:**  \n> Para poder ayudarte mejor, ¿podrías especificar qué aspecto en particular te interesa? Por ejemplo: [opciones relevantes al contexto]\n\n### Ejemplo 5\n**Pregunta del empleado:**  \n> ¿Qué dice el documento sobre [tema específico]?\n\n**Respuesta del asistente:**  \n> Según los documentos disponibles, [información encontrada en múltiples fuentes]\n> \n> Referencias: documento1.pdf, documento2.pdf\n\n## Nota Importante\nTu objetivo es ayudar a los empleados a encontrar respuestas sobre procesos internos, documentos técnicos de ingeniería, procedimientos operativos y información corporativa, sin que ellos tengan que leer todos los documentos. Siempre mantén la exactitud y cita tus fuentes.\n\nno inventes las referencias buscalas de esta forma \ntraer informacion del documento padre de ese vector\ncuando se encunetre un vector con el file_id buscaremos el registro en ingested_files\ndevuelve el \"name\" de ese registro"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3,
       "position": [
-        -32,
-        -112
+        1872,
+        176
       ],
-      "id": "4164806c-da57-4c5b-98c5-3dfa3d0f9f15",
+      "id": "cba63ec3-5874-4f93-81bf-e49ef9f04ec7",
       "name": "AI Agent",
       "alwaysOutputData": true
     },
@@ -116,9 +104,9 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "gpt-4o-mini",
+          "value": "gpt-4.1-mini",
           "mode": "list",
-          "cachedResultName": "gpt-4o-mini"
+          "cachedResultName": "gpt-4.1-mini"
         },
         "builtInTools": {},
         "options": {}
@@ -126,29 +114,31 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -256,
-        128
+        1632,
+        336
       ],
-      "id": "08482962-949a-4d9b-8132-f019427d7eab",
+      "id": "d50c93be-0ccc-4816-a721-62058788373c",
       "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
-          "id": "Z8SDYwaK1GDLy6Dt",
-          "name": "OpenAi fruto github"
+          "id": "9JzFVEYRK1cxP7TT",
+          "name": "OpenAi account"
         }
       }
     },
     {
       "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
         "contextWindowLength": 10
       },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -96,
-        128
+        1776,
+        368
       ],
-      "id": "0f07ce94-8767-4cd6-b6da-a650d925f669",
+      "id": "ea7f0a4c-b9b5-44c6-8183-559607ec0880",
       "name": "Simple Memory"
     },
     {
@@ -160,11 +150,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -2544,
-        -208
+        -864,
+        160
       ],
       "typeVersion": 1,
-      "id": "0df75ebf-4aa2-4dc5-9b83-2a78c573fa17",
+      "id": "308e0def-b682-42c0-ac6e-61d82059b625",
       "name": "Sticky Note2"
     },
     {
@@ -176,15 +166,15 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
       "typeVersion": 1.3,
       "position": [
-        -912,
-        -128
+        768,
+        240
       ],
-      "id": "a45cf219-0d70-4984-bea3-200beb4f328c",
+      "id": "042fe55f-d939-4763-922f-b27381f6e86a",
       "name": "Postgres PGVector Store",
       "credentials": {
         "postgres": {
-          "id": "XLi9lyjxR4i2zurl",
-          "name": "Postgres neon github"
+          "id": "aHOKZeqFeEiimA7B",
+          "name": "Postgres neon.com"
         }
       }
     },
@@ -195,10 +185,10 @@
       "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
       "typeVersion": 1.1,
       "position": [
-        208,
-        0
+        2112,
+        336
       ],
-      "id": "fd926e89-2893-4eb6-b61c-efbab7da1604",
+      "id": "51880bf6-32fe-4282-b2d2-14e4be591322",
       "name": "Answer questions with a vector store"
     },
     {
@@ -208,15 +198,15 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
       "typeVersion": 1.3,
       "position": [
-        48,
-        208
+        1680,
+        560
       ],
-      "id": "470d7dd5-721d-426d-80ff-b879e0b1a3fa",
+      "id": "cbad7f67-157d-43b8-867d-fff44ed66748",
       "name": "Postgres PGVector Store1",
       "credentials": {
         "postgres": {
-          "id": "XLi9lyjxR4i2zurl",
-          "name": "Postgres neon github"
+          "id": "aHOKZeqFeEiimA7B",
+          "name": "Postgres neon.com"
         }
       }
     },
@@ -224,9 +214,9 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "gpt-4o-mini",
+          "value": "gpt-4.1-mini",
           "mode": "list",
-          "cachedResultName": "gpt-4o-mini"
+          "cachedResultName": "gpt-4.1-mini"
         },
         "builtInTools": {},
         "options": {}
@@ -234,15 +224,15 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        384,
-        112
+        2208,
+        544
       ],
-      "id": "ad52768f-cdbe-4d6f-9cf5-b9fd8759757e",
+      "id": "76d1593e-3744-4d2c-ac70-7454bf96ebb3",
       "name": "OpenAI Chat Model1",
       "credentials": {
         "openAiApi": {
-          "id": "Z8SDYwaK1GDLy6Dt",
-          "name": "OpenAi fruto github"
+          "id": "9JzFVEYRK1cxP7TT",
+          "name": "OpenAi account"
         }
       }
     },
@@ -259,14 +249,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -1136,
-        -128
+        544,
+        240
       ],
-      "id": "1d477b7f-0992-4395-baa9-7285dc91db95",
+      "id": "09e7d92b-a519-43e6-8542-3f706be7381c",
       "name": "Descargar un archivo",
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "Tht4CHJk2aoAWdRT",
+          "id": "XJebdk9TS4ygK4bP",
           "name": "Google Drive account"
         }
       }
@@ -276,10 +266,10 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -2480,
-        -128
+        -800,
+        240
       ],
-      "id": "9fa8b5d7-998d-457f-94f5-cf806ff29f29",
+      "id": "cfdba4ff-cbf0-4cf4-93a9-c8b47705fb6d",
       "name": "When clicking ‘Execute workflow’"
     },
     {
@@ -293,10 +283,10 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -2496,
-        80
+        -816,
+        448
       ],
-      "id": "993a4c42-9517-4745-b994-0dd2ca2e794e",
+      "id": "0cf84037-189f-4077-9c57-bab73eaff4e0",
       "name": "Schedule Trigger"
     },
     {
@@ -322,14 +312,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -2352,
-        -16
+        -672,
+        352
       ],
-      "id": "730518d5-2641-4714-a11f-4abe6a88057a",
+      "id": "b0d9f0d8-0ed6-4132-8e01-4797f7725703",
       "name": "Buscar archivos / directorios",
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "Tht4CHJk2aoAWdRT",
+          "id": "XJebdk9TS4ygK4bP",
           "name": "Google Drive account"
         }
       }
@@ -361,10 +351,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -2192,
-        -16
+        -512,
+        352
       ],
-      "id": "83d8b68a-921f-453a-a39c-7cc574a68b6a",
+      "id": "218b7b84-02d3-4165-a9d0-c505d88a82f3",
       "name": "¿Es un archivo?"
     },
     {
@@ -386,14 +376,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -2032,
-        144
+        -352,
+        512
       ],
-      "id": "c119fb2f-24b1-47ce-9039-16f2659c5f2f",
+      "id": "91b79e2f-70f5-40a5-a00b-ecef1a9f2907",
       "name": "Search files and folders",
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "Tht4CHJk2aoAWdRT",
+          "id": "XJebdk9TS4ygK4bP",
           "name": "Google Drive account"
         }
       }
@@ -407,15 +397,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -2032,
-        -144
+        -368,
+        192
       ],
-      "id": "5bc6d692-0baf-41c3-a835-ea425108b0c6",
+      "id": "17861615-5be3-4f52-8d80-57836fa6fdfc",
       "name": "Obteneer carga previa",
       "credentials": {
         "postgres": {
-          "id": "XLi9lyjxR4i2zurl",
-          "name": "Postgres neon github"
+          "id": "aHOKZeqFeEiimA7B",
+          "name": "Postgres neon.com"
         }
       }
     },
@@ -446,10 +436,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -1888,
-        -144
+        -208,
+        288
       ],
-      "id": "8868627d-88a3-49f1-b7e0-a4ed2dcca3f4",
+      "id": "17f88fa9-d60f-488a-8f34-6983dcb90b9f",
       "name": "¿Fue previamente cargado?"
     },
     {
@@ -457,10 +447,10 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -1680,
-        -368
+        0,
+        0
       ],
-      "id": "33fc5dbb-7264-4b97-9a41-02349ddb5fa5",
+      "id": "ad58ec8a-d6de-4f75-adcb-a8ee10e898bb",
       "name": "no hacer nada"
     },
     {
@@ -504,10 +494,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1728,
-        -64
+        -48,
+        304
       ],
-      "id": "17298fd8-f7e9-4873-80a5-c6d1421fa83d",
+      "id": "c024ffb6-566e-4cdc-8d8d-2e2669858915",
       "name": "Extraer variables"
     },
     {
@@ -519,16 +509,16 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -1600,
-        80
+        80,
+        448
       ],
-      "id": "d4a12a5e-52e0-4eaf-a71b-e0ade62320cb",
+      "id": "c4e9c918-f719-4022-94eb-04183274d041",
       "name": "Borrar referencias",
       "alwaysOutputData": true,
       "credentials": {
         "postgres": {
-          "id": "XLi9lyjxR4i2zurl",
-          "name": "Postgres neon github"
+          "id": "aHOKZeqFeEiimA7B",
+          "name": "Postgres neon.com"
         }
       }
     },
@@ -539,10 +529,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -1488,
-        -96
+        192,
+        272
       ],
-      "id": "d5fa91b0-ff9a-4dcb-bf72-de6d5e0cbbab",
+      "id": "6c24a344-d1f1-4f0b-bb2d-0180f2cde1fc",
       "name": "Esperar eliminacion"
     },
     {
@@ -632,15 +622,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -1296,
-        -128
+        384,
+        240
       ],
-      "id": "a38ddb09-a49c-442b-a20f-f335756008d4",
+      "id": "2a1aad20-0981-416d-b45b-ab63a07b303b",
       "name": "Insertar documento",
       "credentials": {
         "postgres": {
-          "id": "XLi9lyjxR4i2zurl",
-          "name": "Postgres neon github"
+          "id": "aHOKZeqFeEiimA7B",
+          "name": "Postgres neon.com"
         }
       }
     },
@@ -653,15 +643,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -1184,
-        128
+        496,
+        496
       ],
-      "id": "96b98da4-f421-4e45-b906-251ad18119a7",
+      "id": "647c5380-5813-45cc-9ed6-be840b85fe46",
       "name": "actualizar file_id en vectores",
       "credentials": {
         "postgres": {
-          "id": "XLi9lyjxR4i2zurl",
-          "name": "Postgres neon github"
+          "id": "aHOKZeqFeEiimA7B",
+          "name": "Postgres neon.com"
         }
       }
     },
@@ -670,14 +660,245 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -1200,
-        400
+        480,
+        768
       ],
-      "id": "5acd5229-6b1e-415f-91c0-7c378bf10c9d",
+      "id": "ed018d5d-0ae3-4669-83e7-bd26f503aeea",
       "name": "termina proceso"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        1408,
+        -256
+      ],
+      "id": "d3ac692a-5acb-4d35-add8-7f6f59c4b48e",
+      "name": "Telegram Trigger",
+      "webhookId": "6acb5039-4ef3-4913-96ad-2fc627d50766",
+      "credentials": {
+        "telegramApi": {
+          "id": "n1trYw9DqdI6E0fm",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Conexión \n**con bot de teelgram**\n",
+        "height": 528,
+        "width": 1280,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1360,
+        -384
+      ],
+      "typeVersion": 1,
+      "id": "8e9b0a1c-0a11-4406-a8d8-333db0b5adbe",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/start",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "c519260a-80fe-4d36-95d3-c2fd10c97b6f"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "/start"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4663f213-66bc-4c45-bbb1-3289aa523494",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/start",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        1616,
+        -256
+      ],
+      "id": "909c6455-1cf8-41ab-bead-792dc5d08315",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "Bienvenido a tu asistente, puedes hacer preguntas en base a los documentos de la empresa",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1952,
+        -272
+      ],
+      "id": "df6d18e0-260e-4663-a197-5443919c0ab6",
+      "name": "Bienvenida",
+      "webhookId": "797f3c12-3e50-40a4-942b-2a7739bb0c40",
+      "credentials": {
+        "telegramApi": {
+          "id": "n1trYw9DqdI6E0fm",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1424,
+        -16
+      ],
+      "id": "a4e589c1-f97c-4fdb-af12-4a56bcc21040",
+      "name": "Escribiendo",
+      "webhookId": "774fa181-4133-43ee-8504-7b817e163486",
+      "credentials": {
+        "telegramApi": {
+          "id": "n1trYw9DqdI6E0fm",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.sanitizedText }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2368,
+        -288
+      ],
+      "id": "03cd0ed0-982e-4af3-9f6e-70409e45841c",
+      "name": "Respoder mensajes",
+      "webhookId": "e302f466-703c-4186-b4a6-9ed39e5eb645",
+      "credentials": {
+        "telegramApi": {
+          "id": "n1trYw9DqdI6E0fm",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "for (const item of $input.all()) {\n  // Aseguramos que la variable 'text' tome el valor de la propiedad 'output'\n  let text = item.json.output;\n\n  if (text) {\n    // === LIMPIEZA DE FORMATO ===\n    \n    // 1. Elimina dobles asteriscos (**)\n    text = text.replace(/\\*\\*/g, '');\n    \n    // 2. Elimina asteriscos simples (*)\n    text = text.replace(/\\*/g, '');\n    \n    // 3. Eliminar cursivas (doble guion bajo: __texto__)\n    text = text.replace(/__/g, '');\n        \n    // 4. Limpiar posibles etiquetas HTML (ej: <br>, <b>)\n    text = text.replace(/<[^>]*>/g, '');\n    \n    // 5. Normalizar el formato de lista (si sigue usando guiones, los convierte en espacio)\n    // text = text.replace(/-\\s+/g, ' '); // Descomenta si quieres eliminar el guion de lista\n    \n    // 6. Eliminar doble salto de línea excesivo\n    text = text.replace(/(\\r\\n|\\n|\\r){2,}/gm, '\\n\\n'); \n    \n    // Asigna el texto limpio a una nueva propiedad, manteniendo el resto de las propiedades.\n    item.json.sanitizedText = text;\n  }\n}\n\n// Retorna todos los ítems de entrada, ahora con la propiedad 'sanitizedText' añadida.\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2208,
+        -64
+      ],
+      "id": "ed813428-7ea4-4310-a9e0-a6ece37245db",
+      "name": "parsear formato de respuesta valido"
+    },
+    {
+      "parameters": {
+        "jsCode": "let text = $('Telegram Trigger').first().json.message.text|| \"\";\n\ntext = text\n  .normalize(\"NFD\")\n  .replace(/[\\u0300-\\u036f]/g, \"\")   // elimina tildes\n  .replace(/ñ/g, \"n\")                // reemplaza ñ\n  .replace(/Ñ/g, \"N\")\n  .replace(/[^\\w\\s]/g, \"\")           // quita símbolos\n  .trim();\n\n// n8n exige retornar un array con objetos\nreturn [\n  {\n    text\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1632,
+        -16
+      ],
+      "id": "af146c7a-44f3-4752-bed9-8cbcac73211e",
+      "name": "Quitar asentos y Ñ"
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Telegram Trigger": [
+      {
+        "json": {
+          "update_id": 323441146,
+          "message": {
+            "message_id": 77,
+            "from": {
+              "id": 523474979,
+              "is_bot": false,
+              "first_name": "Fabio",
+              "username": "drakevil3",
+              "language_code": "es"
+            },
+            "chat": {
+              "id": 523474979,
+              "first_name": "Fabio",
+              "username": "drakevil3",
+              "type": "private"
+            },
+            "date": 1763648871,
+            "text": "hablame del Informe Técnico interno PI-1001"
+          }
+        }
+      }
+    ],
+    "Quitar asentos y Ñ": [
+      {
+        "json": {
+          "text": "hablame del Informe Tecnico interno PI1001"
+        }
+      }
+    ]
+  },
   "connections": {
     "Embeddings OpenAI": {
       "ai_embedding": [
@@ -712,17 +933,6 @@
           {
             "node": "Default Data Loader",
             "type": "ai_textSplitter",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Consultar informacion con base a documentos": {
-      "main": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "main",
             "index": 0
           }
         ]
@@ -889,12 +1099,12 @@
       "main": [
         [
           {
-            "node": "Borrar referencias",
+            "node": "Esperar eliminacion",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Esperar eliminacion",
+            "node": "Borrar referencias",
             "type": "main",
             "index": 0
           }
@@ -955,17 +1165,90 @@
           }
         ]
       ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Bienvenida",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Escribiendo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Escribiendo": {
+      "main": [
+        [
+          {
+            "node": "Quitar asentos y Ñ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "parsear formato de respuesta valido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "parsear formato de respuesta valido": {
+      "main": [
+        [
+          {
+            "node": "Respoder mensajes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Quitar asentos y Ñ": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "22debc11-3926-4be8-92b2-0dab555356a5",
+  "versionId": "ed86e259-9272-463d-8099-27ca339a30a4",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "b6654ee9f12a550672077109839be0c271a5214064269b138b1abc42d65cff66"
+    "instanceId": "ce2d546e30d7064bfd97ef52a1fe4e3a50fdeee79894a960d64ce1a65919afe8"
   },
-  "id": "O2uhNL9O11h6HfsN",
+  "id": "rL3Zh8KInt7rfkDB",
   "tags": []
 }
