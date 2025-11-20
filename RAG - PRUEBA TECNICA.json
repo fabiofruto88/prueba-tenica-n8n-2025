@@ -1,0 +1,971 @@
+{
+  "name": "RAG - PRUEBA TECNICA",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Alimentar base de datos",
+        "height": 560,
+        "width": 672
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1008,
+        -208
+      ],
+      "typeVersion": 1,
+      "id": "d2817918-68a8-4334-a6a6-a3457b63cc4f",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Consumo de base de datos\n",
+        "height": 544,
+        "width": 800,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -320,
+        -208
+      ],
+      "typeVersion": 1,
+      "id": "9bad58ac-6295-4bfe-98cf-4f5c038ee121",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-large",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -320,
+        432
+      ],
+      "id": "d5d71632-d402-484b-a38c-efe3a7377462",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "Z8SDYwaK1GDLy6Dt",
+          "name": "OpenAi fruto github"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "textSplittingMode": "custom",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        -592,
+        -32
+      ],
+      "id": "ba312f6b-c174-4fb1-8ea6-2c9dbe6faf94",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "chunkOverlap": 250,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        -592,
+        96
+      ],
+      "id": "283bf386-1cea-4a8d-8fd7-eba8ed9545ae",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -240,
+        -112
+      ],
+      "id": "37a9e5ba-b98a-4231-a1e0-cc0ee229b8d3",
+      "name": "Consultar informacion con base a documentos",
+      "webhookId": "bc3df8c2-aef7-4ce2-bf2b-9cf6c10dee8b"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=Eres un Asistente de Consultas Internas para la empresa PROINGES S.A.S. \nTu función es responder de manera clara, precisa y profesional a las preguntas de los empleados basándote EXCLUSIVAMENTE en la información proporcionada por el sistema de recuperación (RAG).\n\nINSTRUCCIONES IMPORTANTES:\n1. Usa únicamente la información encontrada en los documentos recuperados. \n   - Si una respuesta NO aparece en los documentos, dilo explícitamente: \n     “No encontré información relacionada a esto en los documentos disponibles.”\n2. Siempre cita la fuente del documento recuperado.\n   - Formato sugerido: (Documento: NOMBRE_DEL_DOCUMENTO)\n   - Si hay varias fuentes: (Fuentes: DOC1, DOC2)\n3. Explica la información de forma clara, evitando tecnicismos innecesarios.\n4. Si el usuario hace una pregunta ambigua, pide que precise.\n5. Si el usuario pide un procedimiento, devuelve una respuesta estructurada paso a paso.\n6. Nunca inventes información, evita suposiciones.\n7. Mantén el rol siempre: asistente interno de PROINGES S.A.S.\n8. Responde en español, con tono profesional pero amigable.\n\nFORMATO DE RESPUESTA:\n- Resumen breve (1–2 líneas si aplica)\n- Explicación clara\n- Citas de documentos nombre del documento o los documentos de donde salio la infomarcion\n\nTu objetivo: ayudar a los empleados a encontrar respuestas sobre procesos internos, documentos técnicos, ingeniería, procedimientos y operaciones, sin que ellos tengan que leer todos los documentos.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -32,
+        -112
+      ],
+      "id": "4164806c-da57-4c5b-98c5-3dfa3d0f9f15",
+      "name": "AI Agent",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -256,
+        128
+      ],
+      "id": "08482962-949a-4d9b-8132-f019427d7eab",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Z8SDYwaK1GDLy6Dt",
+          "name": "OpenAi fruto github"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -96,
+        128
+      ],
+      "id": "0f07ce94-8767-4cd6-b6da-a650d925f669",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "content": "\nSeleccion de documentos\n",
+        "height": 560,
+        "width": 1520,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2544,
+        -208
+      ],
+      "typeVersion": 1,
+      "id": "0df75ebf-4aa2-4dc5-9b83-2a78c573fa17",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "embeddingBatchSize": 250,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        -912,
+        -128
+      ],
+      "id": "a45cf219-0d70-4984-bea3-200beb4f328c",
+      "name": "Postgres PGVector Store",
+      "credentials": {
+        "postgres": {
+          "id": "XLi9lyjxR4i2zurl",
+          "name": "Postgres neon github"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Usa esta herramienta para buscar respuestas en la base de datos vectorial."
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "fd926e89-2893-4eb6-b61c-efbab7da1604",
+      "name": "Answer questions with a vector store"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        48,
+        208
+      ],
+      "id": "470d7dd5-721d-426d-80ff-b879e0b1a3fa",
+      "name": "Postgres PGVector Store1",
+      "credentials": {
+        "postgres": {
+          "id": "XLi9lyjxR4i2zurl",
+          "name": "Postgres neon github"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        384,
+        112
+      ],
+      "id": "ad52768f-cdbe-4d6f-9cf5-b9fd8759757e",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Z8SDYwaK1GDLy6Dt",
+          "name": "OpenAi fruto github"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.file_id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -1136,
+        -128
+      ],
+      "id": "1d477b7f-0992-4395-baa9-7285dc91db95",
+      "name": "Descargar un archivo",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "Tht4CHJk2aoAWdRT",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2480,
+        -128
+      ],
+      "id": "9fa8b5d7-998d-457f-94f5-cf806ff29f29",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -2496,
+        80
+      ],
+      "id": "993a4c42-9517-4745-b994-0dd2ca2e794e",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "returnAll": true,
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "1BKLr8LyM1xKaFkNoJa4hdsjkXDfrPL1g",
+            "mode": "list",
+            "cachedResultName": "Documents for business",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1BKLr8LyM1xKaFkNoJa4hdsjkXDfrPL1g"
+          },
+          "includeTrashed": false
+        },
+        "options": {
+          "fields": [
+            "*"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -2352,
+        -16
+      ],
+      "id": "730518d5-2641-4714-a11f-4abe6a88057a",
+      "name": "Buscar archivos / directorios",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "Tht4CHJk2aoAWdRT",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fa6e6bea-5ec4-4368-8cbe-5a94551a2822",
+              "leftValue": "={{ $json.mimeType }}",
+              "rightValue": "=application/vnd.google-apps.folder",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2192,
+        -16
+      ],
+      "id": "83d8b68a-921f-453a-a39c-7cc574a68b6a",
+      "name": "¿Es un archivo?"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "={{ $json.id }}",
+            "mode": "id"
+          }
+        },
+        "options": {
+          "fields": [
+            "*"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -2032,
+        144
+      ],
+      "id": "c119fb2f-24b1-47ce-9039-16f2659c5f2f",
+      "name": "Search files and folders",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "Tht4CHJk2aoAWdRT",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select count(*) as ingested from public.ingested_files\nwhere file_id = '{{ $json.id }}' and md5_checksum ='{{ $json.md5Checksum }}'",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -2032,
+        -144
+      ],
+      "id": "5bc6d692-0baf-41c3-a835-ea425108b0c6",
+      "name": "Obteneer carga previa",
+      "credentials": {
+        "postgres": {
+          "id": "XLi9lyjxR4i2zurl",
+          "name": "Postgres neon github"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a425eed8-d8ca-433a-b83f-501271adc118",
+              "leftValue": "={{ $json.ingested }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1888,
+        -144
+      ],
+      "id": "8868627d-88a3-49f1-b7e0-a4ed2dcca3f4",
+      "name": "¿Fue previamente cargado?"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -1680,
+        -368
+      ],
+      "id": "33fc5dbb-7264-4b97-9a41-02349ddb5fa5",
+      "name": "no hacer nada"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5fa0ae2d-e2de-42e7-8c73-cdd152727dbd",
+              "name": "id",
+              "value": "={{ $('¿Es un archivo?').item.json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "17cd777b-2249-4fd2-b06b-7605777296ad",
+              "name": "md5Checksum",
+              "value": "={{ $('¿Es un archivo?').item.json.md5Checksum }}",
+              "type": "string"
+            },
+            {
+              "id": "18cad6d1-31bc-47e9-9b18-eb9034ce5db2",
+              "name": "mimeType",
+              "value": "={{ $('¿Es un archivo?').item.json.mimeType }}",
+              "type": "string"
+            },
+            {
+              "id": "12ed2135-8fd1-4a37-ae6b-3386b71cabea",
+              "name": "modifiedTime",
+              "value": "={{ $('¿Es un archivo?').item.json.modifiedTime }}",
+              "type": "string"
+            },
+            {
+              "id": "c4909c0e-391a-44de-bce3-d5987ef80409",
+              "name": "name",
+              "value": "={{ $('¿Es un archivo?').item.json.name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1728,
+        -64
+      ],
+      "id": "17298fd8-f7e9-4873-80a5-c6d1421fa83d",
+      "name": "Extraer variables"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "delete from n8n_vectors where file_id= '{{ $json.id }}'",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1600,
+        80
+      ],
+      "id": "d4a12a5e-52e0-4eaf-a71b-e0ade62320cb",
+      "name": "Borrar referencias",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "XLi9lyjxR4i2zurl",
+          "name": "Postgres neon github"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch"
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1488,
+        -96
+      ],
+      "id": "d5fa91b0-ff9a-4dcb-bf72-de6d5e0cbbab",
+      "name": "Esperar eliminacion"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "ingested_files",
+          "mode": "list",
+          "cachedResultName": "ingested_files"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "file_id": "={{ $json.id }}",
+            "name": "={{ $json.name }}",
+            "mime_type": "={{ $json.mimeType }}",
+            "md5_checksum": "={{ $json.md5Checksum }}",
+            "modified_time": "={{ $json.modifiedTime }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "file_id",
+              "displayName": "file_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "mime_type",
+              "displayName": "mime_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "md5_checksum",
+              "displayName": "md5_checksum",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "modified_time",
+              "displayName": "modified_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "last_ingested",
+              "displayName": "last_ingested",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1296,
+        -128
+      ],
+      "id": "a38ddb09-a49c-442b-a20f-f335756008d4",
+      "name": "Insertar documento",
+      "credentials": {
+        "postgres": {
+          "id": "XLi9lyjxR4i2zurl",
+          "name": "Postgres neon github"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE n8n_vectors\nSET file_id = '{{ $('Extraer variables').item.json.id }}'\nWHERE metadata->'loc'->'lines' = '{{ $json.metadata.loc.lines.toJsonString() }}' and file_id is null",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1184,
+        128
+      ],
+      "id": "96b98da4-f421-4e45-b906-251ad18119a7",
+      "name": "actualizar file_id en vectores",
+      "credentials": {
+        "postgres": {
+          "id": "XLi9lyjxR4i2zurl",
+          "name": "Postgres neon github"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -1200,
+        400
+      ],
+      "id": "5acd5229-6b1e-415f-91c0-7c378bf10c9d",
+      "name": "termina proceso"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "ai_embedding",
+            "index": 0
+          },
+          {
+            "node": "Postgres PGVector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar informacion con base a documentos": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer questions with a vector store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres PGVector Store1": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Descargar un archivo": {
+      "main": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar archivos / directorios": {
+      "main": [
+        [
+          {
+            "node": "¿Es un archivo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Es un archivo?": {
+      "main": [
+        [
+          {
+            "node": "Obteneer carga previa",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Search files and folders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search files and folders": {
+      "main": [
+        [
+          {
+            "node": "¿Es un archivo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Buscar archivos / directorios",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Buscar archivos / directorios",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obteneer carga previa": {
+      "main": [
+        [
+          {
+            "node": "¿Fue previamente cargado?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Fue previamente cargado?": {
+      "main": [
+        [
+          {
+            "node": "no hacer nada",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer variables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer variables": {
+      "main": [
+        [
+          {
+            "node": "Borrar referencias",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Esperar eliminacion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Borrar referencias": {
+      "main": [
+        [
+          {
+            "node": "Esperar eliminacion",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Esperar eliminacion": {
+      "main": [
+        [
+          {
+            "node": "Insertar documento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insertar documento": {
+      "main": [
+        [
+          {
+            "node": "Descargar un archivo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres PGVector Store": {
+      "main": [
+        [
+          {
+            "node": "actualizar file_id en vectores",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "actualizar file_id en vectores": {
+      "main": [
+        [
+          {
+            "node": "termina proceso",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "22debc11-3926-4be8-92b2-0dab555356a5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b6654ee9f12a550672077109839be0c271a5214064269b138b1abc42d65cff66"
+  },
+  "id": "O2uhNL9O11h6HfsN",
+  "tags": []
+}
