@@ -22,7 +22,7 @@ Este repositorio contiene un flujo n8n que implementa un sistema RAG (Retrieval-
 
 2. Alimentar base de datos (amarillo)
    - Descarga el archivo de Google Drive
-   - Carga y troceo del texto: `Recursive Character Text Splitter` con `chunkSize: 100` y `chunkOverlap: 200–250` para mantener contexto entre bloques
+   - Carga y troceo del texto: `Recursive Character Text Splitter` con `chunkSize: 1000` y `chunkOverlap: 200–250` para mantener contexto entre bloques
    - Embeddings: `text-embedding-3-large` (óptimo para documentos grandes)
    - Almacenamiento: `Postgres PGVector Store` con metadatos enriquecidos
    - Relación `file_id`: posterior `UPDATE` para asociar cada chunk con su archivo original
